@@ -26,7 +26,7 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
   WiFi.begin(ssid, password);
-  
+  WiFi.enableAP(0);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
