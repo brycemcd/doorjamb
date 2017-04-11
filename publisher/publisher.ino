@@ -8,8 +8,8 @@
 #include <ESP8266HTTPClient.h>
 #include <PubSubClient.h>
 
-const char* ssid     = "lolpackets-2.4G";
-const char* password = "BryceRules";
+const char* ssid     = "iot-2.4G";
+const char* password = "i0tconnect";
 const char* mqtt_server = "mqtt01.thedevranch.net";
 const char* doorjamb_topic = "doorjamb";
 
