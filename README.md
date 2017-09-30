@@ -21,3 +21,19 @@ on to give her a destination to the toilet and maintain her night vision.
 Communication happens with the publisher continuoulsy publishing door and light
 status to an MQTT message broker. The subscriber devices pull messages off this
 broker and respond to the published events in their own way given their responsibilities.
+
+## Support Notes
+
+Doorjamb publishes to the queue on mqtt01. Consumers read from this queue.
+
+Read the queue:
+
+```bash
+mosquitto_sub -h mqtt01.thedevranch.net -t doorjamb -t weather -i door004
+```
+
+Each second, a json object like this should be published:
+
+```json
+{"doorValue":"open","lightValue":129}
+```
