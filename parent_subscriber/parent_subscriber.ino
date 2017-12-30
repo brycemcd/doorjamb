@@ -6,6 +6,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <PubSubClient.h>
+#include "lightwheel.h"
 
 const char* ssid     = "iot-2.4G";
 const char* password = "i0tconnect";
@@ -26,7 +27,12 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
   WiFi.begin(ssid, password);
+  // Disable AP mode for the builtin
   WiFi.enableAP(0);
+
+  // init the colorwheel
+  setupColorWheel();
+  
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -54,7 +60,7 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("doorjambSUB02")) {
+    if (client.connect("doorjambSUB03")) {
       client.subscribe(doorjamb_topic);
       Serial.println("connected");
     } else {
@@ -91,7 +97,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   
   // Switch on the LED if an 1 was received as first character
   if (doorValue.equals(openValue) && lightValue < SENSOR_THRESHOLD_FOR_FLASHING) {
-   flashLED();
+   //flashLED();
+   colorWheelAlert();
   }
 }
 
