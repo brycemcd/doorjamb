@@ -13,6 +13,10 @@
 #define LED_OFF_COLOR 0
 #define LED_BLUE strip.Color(0, 0, 127)
 #define LED_RED strip.Color(127, 0, 0)
+#define LED_ORANGE strip.Color(255,165,0)
+#define LED_GREEN strip.Color(0, 255,0)
+#define CHASING_CYCLES 5
+
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -29,7 +33,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(8, COLORWHEEL_DIN_PIN, NEO_GRB + NEO
 // Borrowed from strandtest in the example library
 // Demonstration of lights chasing one another
 void theaterChase(uint32_t c, uint8_t wait) {
-  for (int j=0; j<10; j++) {  //do 10 cycles of chasing
+  for (int j=0; j<CHASING_CYCLES; j++) {  //do CHASING_CYCLES cycles of chasing
     for (int q=0; q < 3; q++) {
       for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
         strip.setPixelColor(i+q, c);    //turn every third pixel on
@@ -45,6 +49,13 @@ void theaterChase(uint32_t c, uint8_t wait) {
   }
 }
 
+void turnOffLights() {
+   for(uint16_t i=0; i < strip.numPixels(); i++){
+    strip.setPixelColor(i, LED_OFF_COLOR);
+  }
+  strip.show();
+}
+
 void blinkAllThelights(uint32_t color) {
   for(uint16_t i=0; i < strip.numPixels(); i++){
     strip.setPixelColor(i, color);
@@ -52,10 +63,7 @@ void blinkAllThelights(uint32_t color) {
   strip.show();
   
   delay(50);
-  for(uint16_t i=0; i < strip.numPixels(); i++){
-    strip.setPixelColor(i, LED_OFF_COLOR);
-  }
-  strip.show();
+  turnOffLights();
   delay(50);
 }
 
@@ -69,8 +77,20 @@ void setupColorWheel() {
 }
 
 void colorWheelAlert() {
-  //theaterChase(strip.Color(127, 0, 0), 50); // Red
-  //theaterChase(strip.Color(0, 0, 127), 50); // Blue
-  blinkAllThelights(LED_RED);
+  blinkAllThelights(LED_GREEN);
   blinkAllThelights(LED_BLUE);
 }
+
+void colorWheelMQTTConnecting() {
+  theaterChase(LED_ORANGE, 50);
+}
+
+void colorWheelMQTTConnected() {
+  theaterChase(LED_GREEN, 50);
+  turnOffLights();
+}
+
+void colorWheelMQTTConnectionFailed() {
+  theaterChase(LED_RED, 50);
+}
+

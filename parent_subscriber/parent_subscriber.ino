@@ -59,15 +59,20 @@ void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
+    // give a visual indicator
+    colorWheelMQTTConnecting();
+    
     // Attempt to connect
     if (client.connect("doorjambSUB03")) {
       client.subscribe(doorjamb_topic);
       Serial.println("connected");
+      colorWheelMQTTConnected();
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
       // Wait 5 seconds before retrying
+      colorWheelMQTTConnectionFailed();
       delay(5000);
     }
   }
