@@ -2,7 +2,8 @@
 // and managing the functions for the lightwheel (8 x WS2812 5050 RGB LED Ring)
 //
 // The expectation is that the code will be called from the parent_subscriber.ino
-// code 
+// code
+// Red wire goes to 3 V, Black to ground.
 
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__

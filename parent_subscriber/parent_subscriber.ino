@@ -6,7 +6,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <PubSubClient.h>
-#include "lightwheel.h"
+// #include "lightwheel.h"
+#include "multicolorLED.h"
 
 const char* ssid     = "iot-2.4G";
 const char* password = "i0tconnect";
@@ -31,7 +32,8 @@ void setup() {
   WiFi.enableAP(0);
 
   // init the colorwheel
-  setupColorWheel();
+  // setupColorWheel();
+  multicolorLEDSetup();
   
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -60,19 +62,22 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // give a visual indicator
-    colorWheelMQTTConnecting();
+    // ccolorWheelMQTTConnecting();
+    mutlicolorLEDMQTTConnecting();
     
     // Attempt to connect
     if (client.connect("doorjambSUB03")) {
       client.subscribe(doorjamb_topic);
       Serial.println("connected");
-      colorWheelMQTTConnected();
+      //colorWheelMQTTConnected();
+      multicolorLEDMQTTSuccess();
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
       // Wait 5 seconds before retrying
-      colorWheelMQTTConnectionFailed();
+      //colorWheelMQTTConnectionFailed();
+      multicolorLEDMQTTFail();
       delay(5000);
     }
   }
@@ -103,7 +108,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   // Switch on the LED if an 1 was received as first character
   if (doorValue.equals(openValue) && lightValue < SENSOR_THRESHOLD_FOR_FLASHING) {
    //flashLED();
-   colorWheelAlert();
+   //colorWheelAlert();
+   multicolorLEDMQTTAlert();
   }
 }
 
